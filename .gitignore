@@ -2,3 +2,6 @@ src/
 build.py
 build-diagrams/
 .agents/
+board-src.html
+build_app.py
+__pycache__/
