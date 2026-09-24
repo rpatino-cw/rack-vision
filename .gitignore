@@ -6,3 +6,4 @@ board-src.html
 build_app.py
 __pycache__/
 visuals.py
+playbooks.py
