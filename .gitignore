@@ -9,3 +9,7 @@ visuals.py
 playbooks.py
 arch.py
 roles_tasks.py
+gallery/
+gallery.py
+repo_graph.py
+favicon.svg
