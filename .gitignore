@@ -8,3 +8,4 @@ __pycache__/
 visuals.py
 playbooks.py
 arch.py
+roles_tasks.py
