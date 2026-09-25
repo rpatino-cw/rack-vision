@@ -24,7 +24,7 @@ button[disabled]{opacity:.6;cursor:wait}
   <button id="go" type="submit">Open</button>
 </form>
 <script>
-const P = {"s":"6HJLjJrmTePRr+9qZrpxoQ==","i":"4jLr/ji/Zi/ee7qX","c":"bohi2QU3mmAeYAUP9Hx6n15Evh3K9JWJUzp89VojJtfxW+Pkr5/Tkj9Tg1e8KlqnzDzoE7VapjWZKF8qwgGMAikbVZ4r1ePWryERu9rqDNuTkxPDntkI1l6UppEBYBOFB8L7HpTB6tu6JLHptXytqDiFDXtZ4OIi9aqUn6fE4yb2k1VDkiPYKVz7Fm9BTfiRcRAxLEWWDr2rwPFvXRL0/HHbbm6cjqfxU8Y+B9zbQoVBwXHD1JNlN2Gve3iWXfU=","n":600000};
+const P = {"s":"RMc36aj54N998j8MxyaP5A==","i":"qX77dsPQLOouWqyN","c":"fH7TUXSJnLo5Qw0w4hb4y+DGg3IEEmapsJaxTYb2POKdXnOQPPQLGO9UDEu7TmNQ3Ureu6Jsx6nlfOa76fHmTGc++jLFtEaDrOswxSgQJgZXa3drT8hl4zvy2l6BPEdbUal2CU1uK0ib2aF3dL9pIiPYk6F6dPmHbPYcb9la9nkKwEpu8um9hsmN+HS1JIJfUSSpPG4KyNUw3vghqm5hWi36boYViljHpQI1FH+YgwUp5hHCX43cBTBbbrZIBm0=","n":600000};
 const un = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
 async function unlock(pin){
   const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pin), "PBKDF2", false, ["deriveKey"]);
@@ -33,7 +33,7 @@ async function unlock(pin){
 }
 function show(html){ document.open(); document.write(html); document.close(); }
 // Sept 25: no more hard refresh. Every ship writes version.json; an older cached page swaps itself for the new one.
-const BUILD = "muh6pvkq";
+const BUILD = "muh6rzx5";
 function newer(){
   return fetch("version.json?t=" + Date.now(), {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(j => {
     if (!j || !j.v || j.v === BUILD) return false;
