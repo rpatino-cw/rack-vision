@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><script>try{var t=localStorage.getItem("rv-theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}</script>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><script>try{var t=localStorage.getItem("rv-theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}try{if(sessionStorage.getItem("rv_pin"))document.documentElement.classList.add("auto")}catch(e){}</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow"><title>Rack Vision</title><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%232f6f73%22/%3E%3Crect%20x%3D%2216%22%20y%3D%229%22%20width%3D%2232%22%20height%3D%2246%22%20rx%3D%224%22%20fill%3D%22%23f7f5f0%22/%3E%3Crect%20x%3D%2220%22%20y%3D%2214%22%20width%3D%2224%22%20height%3D%227%22%20rx%3D%222%22%20fill%3D%22%23dfe9e1%22/%3E%3Ccircle%20cx%3D%2239%22%20cy%3D%2217.5%22%20r%3D%222.4%22%20fill%3D%22%233f8f5a%22/%3E%3Crect%20x%3D%2220%22%20y%3D%2224%22%20width%3D%2224%22%20height%3D%227%22%20rx%3D%222%22%20fill%3D%22%23dfe9e1%22/%3E%3Ccircle%20cx%3D%2239%22%20cy%3D%2227.5%22%20r%3D%222.4%22%20fill%3D%22%233f8f5a%22/%3E%3Crect%20x%3D%2220%22%20y%3D%2234%22%20width%3D%2224%22%20height%3D%227%22%20rx%3D%222%22%20fill%3D%22%23f3e6cf%22/%3E%3Ccircle%20cx%3D%2239%22%20cy%3D%2237.5%22%20r%3D%222.4%22%20fill%3D%22%23d69a2d%22/%3E%3Crect%20x%3D%2220%22%20y%3D%2244%22%20width%3D%2224%22%20height%3D%227%22%20rx%3D%222%22%20fill%3D%22%23f4dcd8%22/%3E%3Ccircle%20cx%3D%2239%22%20cy%3D%2247.5%22%20r%3D%222.4%22%20fill%3D%22%23c2453b%22/%3E%3C/svg%3E">
 <style>
@@ -15,6 +15,11 @@ input:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline
 button{font:700 16px/1 system-ui,sans-serif;padding:14px;border:0;border-radius:999px;background:var(--text);color:var(--bg);cursor:pointer}
 button[disabled]{opacity:.6;cursor:wait}
 .err{color:var(--bad)}
+/* Sept 25: already unlocked in this tab: blank page in the site's own colors while the next page decrypts */
+html.auto form{display:none}
+html.auto body{background:#f7f5f0}
+@media (prefers-color-scheme:dark){html.auto:not([data-theme=light]) body{background:#1b1d1f}}
+html.auto[data-theme=dark] body{background:#1b1d1f}
 </style></head><body>
 <form id="f">
   <h1>Rack Vision</h1>
@@ -24,7 +29,7 @@ button[disabled]{opacity:.6;cursor:wait}
   <button id="go" type="submit">Open</button>
 </form>
 <script>
-const P = {"s":"V7fho4V7KWN3dVNBUGcIyg==","i":"XfY3g9wmSpVjsbHG","c":"mUO+84b4Q8h2Gy1CumaIyS0+JD/JzmVWnxJFXwIxPIuBDD+pk7QuX95X8AH6HPekWG4XjicVOWe/p/+vOuya36B3BDkPDSI/z3lmwdDm9o5QW2UpH8nKg3NSyJaHq5/faWUBY3h+Kdc16+dnz0ldQNmC1ijgVl8dVLk64aM/HP0tsjzqh/F5cziOKvDoIB7X0JK3Px/5w3nXVNqS2U2Hl3BexdRjYLbpbxhzWWjfHBM=","n":600000};
+const P = {"s":"cNifL2Ee8/hDYFFHF3HnEA==","i":"Bpo6zY0TFKJVFFyn","c":"czByiCtAugCT5wUicc1souh2bvJMZPUJvUXDFwX8uzS9nMhE5l9yIOHt3/ATQksHts0/aW0eoyH7aYm96mnjH9kdwXMOiUNhVk+tDvBv0hL5WJWHF8Qlq1ypHUEcooueWE95PtPKLIlj7SbNdJ3GTgkbUqMgfEWk91Lu3KlQyYYtcjW0id2CUd2Jeh8EHEbASEG3IkB9gpnaAS7xTZU1ov0HzVa/PpZLf5TSKYrAtEA=","n":600000};
 const un = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
 async function unlock(pin){
   const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pin), "PBKDF2", false, ["deriveKey"]);
@@ -33,7 +38,7 @@ async function unlock(pin){
 }
 function show(html){ document.open(); document.write(html); document.close(); }
 // Sept 25: no more hard refresh. Every ship writes version.json; an older cached page swaps itself for the new one.
-const BUILD = "muhe159d";
+const BUILD = "muhe8ov9";
 function newer(){
   return fetch("version.json?t=" + Date.now(), {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(j => {
     if (!j || !j.v || j.v === BUILD) return false;
@@ -41,9 +46,13 @@ function newer(){
     const u = new URL(location.href); u.searchParams.set("v", j.v); location.replace(u.toString()); return true;
   }).catch(() => false);
 }
-const fresh = Promise.race([newer(), new Promise(r => setTimeout(() => r(false), 1500))]);
+const fresh = Promise.race([newer(), new Promise(r => setTimeout(() => r(false), 600))]);
 const saved = (() => { try { return sessionStorage.getItem("rv_pin"); } catch(e){ return null; } })();
-if (saved) fresh.then(moved => { if (!moved) unlock(saved).then(show).catch(() => {}); });
+if (saved) {
+  const opened = unlock(saved);
+  Promise.all([fresh, opened]).then(([moved, html]) => { if (!moved) show(html); })
+    .catch(() => { try { sessionStorage.removeItem("rv_pin"); } catch(e){} document.documentElement.classList.remove("auto"); });
+}
 document.getElementById("f").addEventListener("submit", async e => {
   e.preventDefault();
   const pin = document.getElementById("pin").value, go = document.getElementById("go"), err = document.getElementById("err");
