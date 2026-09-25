@@ -23,7 +23,7 @@ button[disabled]{opacity:.6;cursor:wait}
   <button id="go" type="submit">Open</button>
 </form>
 <script>
-const P = {"s":"g1/z0kOv3stYNNZYSY9dXw==","i":"33NXpEPS28Q2ZlTd","c":"vzZ8P+s5pYbZqLisrNUMc7jfmWCJ/hFf0FgMQYR7Li7Gcetq+a/lC8wniIA6JfiZYJjR/MHBpp6MY3tmAyUsNamgIijyB8BAkjN5dq1/Y/HhfA9ZQl//lQIWM8nhlRNml8pgcN9BXDlOZMB1jFXw4jgZ0Cb+rrUppuSxJa4YbQT9Vvbmp1JsCDJWFpOoIcmmqItmVBedO8VfPclRSxFLxDcGSh1H8kcBlR9MQhEp9G5nWbRLDGLU6Q==","n":600000};
+const P = {"s":"78S2SOmvJBAPq7ZjB6B/Wg==","i":"+1OC0bipbhzUqRB8","c":"jp6PMLUSOT5vDIL/n9NN6hg8gigJS6E6U+vlQVkrQxhIRBHyTW8okFzMh1hYstsa5wxXoqrDXX8xLhaBo/b9rThXNAhbHfa4gWJllN7Txu4amblaCNbM2w2Cvk86doiJhqCVDpRQOCwETsgA8BvSX3KbLYOgMSYtFwUJWY9N/HG6m/cE6VSa3OQuC7jdHvMerBk2cpQSUiRBCS6BkkfecdHHhVeWZe+8vT6CcNj0N4Q+t/0aPxD4zQ==","n":600000};
 const un = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
 async function unlock(pin){
   const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pin), "PBKDF2", false, ["deriveKey"]);
@@ -31,8 +31,18 @@ async function unlock(pin){
   return new TextDecoder().decode(await crypto.subtle.decrypt({name:"AES-GCM", iv:un(P.i)}, key, un(P.c)));
 }
 function show(html){ document.open(); document.write(html); document.close(); }
+// Sept 25: no more hard refresh. Every ship writes version.json; an older cached page swaps itself for the new one.
+const BUILD = "muh6cwly";
+function newer(){
+  return fetch("version.json?t=" + Date.now(), {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(j => {
+    if (!j || !j.v || j.v === BUILD) return false;
+    try { if (sessionStorage.getItem("rv-v-tried") === j.v) return false; sessionStorage.setItem("rv-v-tried", j.v); } catch(e){}
+    const u = new URL(location.href); u.searchParams.set("v", j.v); location.replace(u.toString()); return true;
+  }).catch(() => false);
+}
+const fresh = Promise.race([newer(), new Promise(r => setTimeout(() => r(false), 1500))]);
 const saved = (() => { try { return sessionStorage.getItem("rv_pin"); } catch(e){ return null; } })();
-if (saved) unlock(saved).then(show).catch(() => {});
+if (saved) fresh.then(moved => { if (!moved) unlock(saved).then(show).catch(() => {}); });
 document.getElementById("f").addEventListener("submit", async e => {
   e.preventDefault();
   const pin = document.getElementById("pin").value, go = document.getElementById("go"), err = document.getElementById("err");
